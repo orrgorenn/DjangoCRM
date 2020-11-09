@@ -7,6 +7,7 @@ class Contractor(models.Model):
     email = models.CharField(max_length=100, null=False)
     cellphone = models.CharField(max_length=15, null=True)
     office_phone = models.CharField(max_length=15, null=True)
+    field_of_work = models.CharField(max_length=50, null=False, default='NaN')
     date_created = models.DateTimeField(auto_now_add=True, null=False)
 
     def __str__(self):

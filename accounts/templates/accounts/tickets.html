@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-4 col-xs-12">
             <div class="card card-body">
-                <h5>Tickets</h5>
+                <h5>Ticket: {{ticket.ticket}}</h5>
                 <hr>
                 <a class="btn btn-outline-info btn-sm btn-block" href="">Update Ticket</a>
                 <a class="btn btn-outline-success btn-sm btn-block" href="">Close Ticket</a>
@@ -18,8 +18,8 @@
             <div class="card card-body">
                 <h5>Ticket Information</h5>
                 <hr>
-                <p>Date Created: </p>
-                <p>Status: </p>
+                <p>Date Created: {{ticket.date_created}}</p>
+                <p>Status: {{ticket.status}}</p>
             </div>
         </div>
 
@@ -61,6 +61,14 @@
                         <th>Status</th>
                         <th>Update</th>
                         <th>Remove</th>
+                    </tr>
+                    <tr>
+                        <td>{{ticket.ticket}}</td>
+                        <td>{{ticket.category}}</td>
+                        <td>{{ticket.date_created}}</td>
+                        <td>{{ticket.status}}</td>
+                        <td>Update</td>
+                        <td>Remove</td>
                     </tr>
                 </table>
             </div>
