@@ -2,6 +2,70 @@
 
 {% block content %}
 
-<h1>Tickets</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Tickets</h5>
+                <hr>
+                <a class="btn btn-outline-info btn-sm btn-block" href="">Update Ticket</a>
+                <a class="btn btn-outline-success btn-sm btn-block" href="">Close Ticket</a>
+                <a class="btn btn-outline-danger btn-sm btn-block" href="">Delete Ticket</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Ticket Information</h5>
+                <hr>
+                <p>Date Created: </p>
+                <p>Status: </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Total Tickets</h5>
+                <hr>
+                <h1 style="text-align: center; padding: 10px;"></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="card card-body">
+                <form method="POST" action="" name="search-form">
+                    <input type="submit" class="btn btn-primary" value="Search" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Category</th>
+                        <th>Date Created</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Remove</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
