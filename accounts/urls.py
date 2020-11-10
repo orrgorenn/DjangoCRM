@@ -3,8 +3,13 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
+
+    path('login/', views.loginPage, name="login"),
+    path('register/', views.registerPage, name="register"),
+
     path('tickets/', views.tickets, name="tickets"),
     path('contractors/<str:pk_id>/', views.contractors, name="contractors"),
+
     path('create_ticket/<str:pk_id>/', views.create_ticket, name="create_ticket"),
     path('update_ticket/<str:pk_id>', views.update_ticket, name="update_ticket"),
     path('delete_ticket/<str:pk_id>', views.delete_ticket, name="delete_ticket"),
