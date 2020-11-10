@@ -4,26 +4,74 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Contractor: {{contractor.last_name}}, {{contractor.first_name}}</h5>
+                <hr>
+                <a class="btn btn-outline-info btn-sm btn-block" href="{% url 'update_contractor' contractor.id %}">Update Contractor</a>
+                <a class="btn btn-outline-danger btn-sm btn-block" href="{% url 'delete_contractor' contractor.id %}">Delete Contractor</a>
+                <a class="btn btn-outline-success btn-sm btn-block" href="{% url 'create_ticket' contractor.id %}">Open Ticket</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Contractor Information</h5>
+                <hr>
+                <p>Date Created: {{contractor.date_created}}</p>
+                <p>Field of Work: {{contractor.field_of_work}}</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12">
+            <div class="card card-body">
+                <h5>Total Tickets</h5>
+                <hr>
+                <h1 style="text-align: center; padding: 10px;">{{tickets_count}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container-fluid">
+    <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="card card-body">
-                <h5>Contractors</h5>
+                <form method="POST" action="" name="search-form">
+                    <input type="submit" class="btn btn-primary" value="Search" />
+                </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
             <div class="card card-body">
-                <table class="table">
+                <table class="table table-sm">
                     <tr>
-                        <th>Contractor</th>
-                        <th>Field of Work</th>
-                        <th>Phone Number</th>
-                        <th>E-mail</th>
+                        <th>Ticket</th>
+                        <th>Category</th>
+                        <th>Date Created</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Remove</th>
                     </tr>
-                    
                     <tr>
-                        <td>{{contractor.last_name}}, {{contractor.first_name}}</td>
-                        <td>{{contractor.field_of_work}}</td>
-                        <td>{{contractor.cellphone}}, {{contractor.office_phone}}</td>
-                        <td>{{contractor.email}}</td>
+                        {% for ticket in tickets %}
+                            <td>{{ticket.ticket}}</td>
+                            <td>{{ticket.get_category_display}}</td>
+                            <td>{{ticket.date_created}}</td>
+                            <td><span class="badge badge-primary">{{ticket.get_status_display}}</span></td>
+                            <td><a href="" class="btn btn-sm btn-info">Update</td>
+                            <td><a href="" class="btn btn-sm btn-danger">Remove</a></td>
+                        {% endfor %}
                     </tr>
-                    
                 </table>
             </div>
         </div>

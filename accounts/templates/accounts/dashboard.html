@@ -10,7 +10,7 @@
             <h5>Contractor</h5>
             <hr>
             <div class="card card-body">
-                <a class="btn btn-primary btn-sm btn-block" href="">Create Contractor</a>
+                <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_contractor' %}">Create Contractor</a>
                 <table class="table table-sm">
                     <tr>
                         <th>Contractor</th>
@@ -19,9 +19,9 @@
                     </tr>
                     {% for contractor in contractors %}
                     <tr>
-                        <td>{{contractor.last_name}}, {{contractor.first_name}}</td>
+                        <td><a href="{% url 'contractors' contractor.id %}">{{contractor.last_name}}, {{contractor.first_name}}</a></td>
                         <td>{{contractor.cellphone}}, {{contractor.office_phone}}</td>
-                        <td>{{contractor.field_of_work}}</td>
+                        <td>{{contractor.get_field_of_work_display}}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -31,22 +31,21 @@
             <h5>Most Urgent Tickets</h5>
             <hr>
             <div class="card card-body">
-                <a class="btn btn-primary btn-sm btn-block" href="">Create Ticket</a>
                 <table class="table table-sm">
                     <tr>
                         <th width="60%">Ticket</th>
                         <th>Status</th>
                         <th>Last Updated</th>
-                        <th>Update</th>
-                        <th>Close</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     {% for ticket in tickets %}
                     <tr>
                         <td>{{ticket.ticket}}</td>
-                        <td><span class="badge badge-primary">{{ticket.status}}</span></td>
+                        <td><span class="badge badge-primary">{{ticket.get_status_display}}</span></td>
                         <td>{{ticket.date_last_update}}</td>
-                        <td><a href="" class="btn btn-primary btn-sm">Update</a></td>
-                        <td><a href="" class="btn btn-success btn-sm">Close</a></td>
+                        <td><a href="{% url 'update_ticket' ticket.id %}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i></a></a></td>
+                        <td><a href="{% url 'delete_ticket' ticket.id %}" class="btn btn-success btn-sm"><i class="far fa-check-circle"></i></a></td>
                     </tr>
                     {% endfor %}
                 </table>

@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="#" class="navbar-brand">
+    <a href="{% url 'home' %}" class="navbar-brand">
         <img src="{% static 'images/logo.png' %}" height="60" alt="Ariel Group">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,13 +10,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="">Dashboard <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'home' %}">Dashboard <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Tickets</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Contractors</a>
+                <a class="nav-link" href="{% url 'tickets' %}">Tickets</a>
             </li>
         </ul>
     </div>

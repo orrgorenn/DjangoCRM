@@ -7,7 +7,22 @@ class Contractor(models.Model):
     email = models.CharField(max_length=100, null=False)
     cellphone = models.CharField(max_length=15, null=True)
     office_phone = models.CharField(max_length=15, null=True)
-    field_of_work = models.CharField(max_length=50, null=False, default='NaN')
+    CATEGORY_CHOICES = [
+        ('1', 'איטום'),
+        ('2', 'אינסטלציה'),
+        ('3', 'אקוסטיקה'),
+        ('4', 'ביטחון'),
+        ('5', 'בטיחות - אש'),
+        ('6', 'בטיחות - אתר'),
+        ('7', 'בינוי'),
+        ('8', 'חשמל'),
+        ('9', 'מיזוג אוויר'),
+        ('10', 'נגישות'),
+        ('11', 'ניקיון'),
+        ('12', 'תאורה'),
+        ('13', 'תקשורת')
+    ]
+    field_of_work = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='1')
     date_created = models.DateTimeField(auto_now_add=True, null=False)
 
     def __str__(self):
@@ -58,10 +73,16 @@ class Ticket(models.Model):
         ('CLSD', 'Closed')
     ]
     status = models.CharField(max_length=4, choices=STATUS_CHOICES, default='NEW')
-    priority = models.IntegerField(null=False, default=1)
+    PRIORITY_CHOICES = [
+        ('1', 'Low (7 / 48)'),
+        ('2', 'Normal (4 / 24)'),
+        ('3', 'High (2 / 8)'),
+        ('4', 'Critical (1 / 3)'),
+    ]
+    priority = models.CharField(choices=PRIORITY_CHOICES, default='1', max_length=1)
     contractor = models.ForeignKey(Contractor, null=True, on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=False)
-    date_last_update = models.DateTimeField(null=True)
+    date_last_update = models.DateTimeField(auto_now=True)
     date_closed = models.DateTimeField(null=True)
 
     def __str__(self):
