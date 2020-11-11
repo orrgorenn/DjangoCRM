@@ -3,44 +3,63 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponseForbidden
+from django.contrib.auth.models import Group
+
+from .decorators import unauth_user, allowed_users, admin_only
 from .models import Contractor, Ticket
 from .forms import TicketForm, ContractorForm, CreateUserForm
 from .filters import TicketFilter
-from django.contrib import messages
 
 # Create your views here
 
 # Login & Register Views
+@unauth_user
 def registerPage(request):
     form = CreateUserForm()
 
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account ' + user + ' was created successfuly.')
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            # Add User to 'users' Group
+            group = Group.objects.get(name='users')
+            user.groups.add(group)
+            
+            messages.success(request, 'Account ' + username + ' was created successfuly.')
             return redirect('login')
 
     context = {'form': form}
     return render(request, 'accounts/register.html', context)
 
+@unauth_user
 def loginPage(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            print(password)
+            messages.info(request, 'Username OR Password is incorrect.')
 
     context = {}
     return render(request, 'accounts/login.html', context)
 
+@login_required(login_url='login')
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
+@admin_only
 def home(request):
     tickets_var = Ticket.objects.all()
     contractors_var = Contractor.objects.all()
@@ -58,6 +77,7 @@ def home(request):
 
     return render(request, 'accounts/dashboard.html', context)
 
+@login_required(login_url='login')
 def tickets(request):
     tickets = Ticket.objects.all()
     context = {
@@ -65,6 +85,7 @@ def tickets(request):
     }
     return render(request, 'accounts/tickets.html', context)
 
+@login_required(login_url='login')
 def contractors(request, pk_id):
     contractor = Contractor.objects.get(id=pk_id)
     tickets = contractor.ticket_set.all()
@@ -81,8 +102,13 @@ def contractors(request, pk_id):
     }
     return render(request, 'accounts/contractors.html', context)
 
+def userPage(request):
+    context = {}
+    return render(request, 'accounts/user.html', context)
+
 # Create Functions
 
+@login_required(login_url='login')
 def create_ticket(request, pk_id):
     contractor = Contractor.objects.get(id=pk_id)
     form = TicketForm(initial={'contractor': contractor})
@@ -95,6 +121,7 @@ def create_ticket(request, pk_id):
     context = {'form': form}
     return render(request, 'accounts/ticket_form.html', context)
 
+@login_required(login_url='login')
 def create_contractor(request):
     form = ContractorForm()
     if request.method == 'POST':
@@ -108,6 +135,7 @@ def create_contractor(request):
 
 # Update Functions
 
+@login_required(login_url='login')
 def update_ticket(request, pk_id):
     ticket = Ticket.objects.get(id=pk_id)
     form = TicketForm(instance=ticket)
@@ -120,6 +148,7 @@ def update_ticket(request, pk_id):
     context = {'form': form}
     return render(request, 'accounts/ticket_form.html', context)
 
+@login_required(login_url='login')
 def update_contractor(request, pk_id):
     contractor = Contractor.objects.get(id=pk_id)
     form = ContractorForm(instance=contractor)
@@ -134,6 +163,7 @@ def update_contractor(request, pk_id):
 
 # Delete Functions
 
+@login_required(login_url='login')
 def delete_ticket(request, pk_id):
     ticket = Ticket.objects.get(id=pk_id)
     if request.method == 'POST':
@@ -143,6 +173,7 @@ def delete_ticket(request, pk_id):
     context = {'ticket': ticket}
     return render(request, 'accounts/delete_ticket.html', context)
 
+@login_required(login_url='login')
 def delete_contractor(request, pk_id):
     contractor = Contractor.objects.get(id=pk_id)
     if request.method == 'POST':

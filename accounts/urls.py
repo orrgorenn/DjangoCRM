@@ -6,9 +6,11 @@ urlpatterns = [
 
     path('login/', views.loginPage, name="login"),
     path('register/', views.registerPage, name="register"),
+    path('logout/', views.logoutUser, name="logout"),
 
     path('tickets/', views.tickets, name="tickets"),
     path('contractors/<str:pk_id>/', views.contractors, name="contractors"),
+    path('user/', views.userPage, name="user"),
 
     path('create_ticket/<str:pk_id>/', views.create_ticket, name="create_ticket"),
     path('update_ticket/<str:pk_id>', views.update_ticket, name="update_ticket"),
