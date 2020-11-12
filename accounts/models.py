@@ -1,13 +1,16 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Contractor(models.Model):
-    first_name = models.CharField(max_length=50, null=False)
-    last_name = models.CharField(max_length=50, null=False)
-    email = models.CharField(max_length=100, null=False)
-    cellphone = models.CharField(max_length=15, null=True)
-    office_phone = models.CharField(max_length=15, null=True)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    email = models.CharField(max_length=100, null=True)
+    cellphone = models.CharField(max_length=15, null=True, blank=True)
+    office_phone = models.CharField(max_length=15, null=True, blank=True)
     CATEGORY_CHOICES = [
+        ('0', 'לא נבחר'),
         ('1', 'איטום'),
         ('2', 'אינסטלציה'),
         ('3', 'אקוסטיקה'),
@@ -22,11 +25,12 @@ class Contractor(models.Model):
         ('12', 'תאורה'),
         ('13', 'תקשורת')
     ]
-    field_of_work = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='1')
+    field_of_work = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default='0')
+    profile_pic = models.ImageField(null=True, blank=True, default='profile.png')
     date_created = models.DateTimeField(auto_now_add=True, null=False)
 
     def __str__(self):
-        return self.last_name + ' ' + self.first_name
+        return self.user.username
 
 class Ticket(models.Model):
     ticket = models.CharField(max_length=100, null=False)

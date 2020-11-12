@@ -29,6 +29,9 @@ def registerPage(request):
             # Add User to 'users' Group
             group = Group.objects.get(name='users')
             user.groups.add(group)
+            Contractor.objects.create(
+                user = user
+            )
             
             messages.success(request, 'Account ' + username + ' was created successfuly.')
             return redirect('login')
@@ -65,7 +68,7 @@ def home(request):
     contractors_var = Contractor.objects.all()
     total_tickets = tickets_var.count()
     resolved_tickets = tickets_var.filter(status='CLSD').count()
-    opened_tickets = tickets_var.filter(Q(status='NEW') | Q(status='OPEN') | Q(status='RSPD') | Q(status='NATN')).count()
+    opened_tickets = tickets_var.filter(Q(status='NEW') | Q(status='WTNG') | Q(status='OPEN') | Q(status='RSPD') | Q(status='NATN')).count()
 
     context = {
         'tickets': tickets_var,
@@ -102,9 +105,32 @@ def contractors(request, pk_id):
     }
     return render(request, 'accounts/contractors.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['users'])
 def userPage(request):
-    context = {}
+    tickets = request.user.contractor.ticket_set.all()
+
+    total_tickets = tickets.count()
+    resolved_tickets = tickets.filter(status='CLSD').count()
+    opened_tickets = tickets.filter(Q(status='NEW') | Q(status='WTNG') | Q(status='OPEN') | Q(status='RSPD') | Q(status='NATN')).count()
+
+    print(tickets)
+    context = {'tickets': tickets, 'total_tickets': total_tickets, 'resolved_tickets': resolved_tickets, 'opened_tickets': opened_tickets}
     return render(request, 'accounts/user.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['users'])
+def accSettings(request):
+    contractor = request.user
+    form = ContractorForm(instance=contractor)
+
+    if request.method == 'POST':
+        form = ContractorForm(request.POST, request.FILES, instance=contractor)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'accounts/acc_settings.html', context)
 
 # Create Functions
 

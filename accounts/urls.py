@@ -11,6 +11,7 @@ urlpatterns = [
     path('tickets/', views.tickets, name="tickets"),
     path('contractors/<str:pk_id>/', views.contractors, name="contractors"),
     path('user/', views.userPage, name="user"),
+    path('acc_settings/', views.accSettings, name="acc_settings"),
 
     path('create_ticket/<str:pk_id>/', views.create_ticket, name="create_ticket"),
     path('update_ticket/<str:pk_id>', views.update_ticket, name="update_ticket"),

@@ -6,7 +6,26 @@
 
 <div class="container-fluid">
     <div class="row">
-        <h3>User Profile</h3>
+        <div class="col-md-12 col-xs-12">
+            <div class="card card-body">
+                <table class="table table-sm">
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Category</th>
+                        <th>Date Created</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        {% for ticket in tickets %}
+                            <td>{{ticket.ticket}}</td>
+                            <td>{{ticket.get_category_display}}</td>
+                            <td>{{ticket.date_created}}</td>
+                            <td><span class="badge badge-primary">{{ticket.get_status_display}}</span></td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

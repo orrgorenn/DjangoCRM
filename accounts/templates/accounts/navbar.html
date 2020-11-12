@@ -16,6 +16,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'tickets' %}">Tickets</a>
             </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'acc_settings' %}">Acc. Settings</a>
+            </li>
             {% endif %}
         </ul>
     </div>
